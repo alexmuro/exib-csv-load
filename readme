@@ -1,0 +1,29 @@
+Checklist for NAHB import:
+
+- First, remove exhibitor_booths for all exhibitors in the file (* not all exhibitors for the show)
+  Loop through all the rows, get all the import ids, for each import id, match on tbl_exhibitor_show and remove all the exhibitor_booths that match
+- Then, loop through again to start the import
+  - Convert special characters from macro to html entities
+  - always update the exhibiting_as column
+  - if the tbl_exhibitor_show.allowupdate column = 1 then don't update any other columns on tbl_exhibitor_show or tbl_exhibitor_contact, but we always update exhibitor_booths and tbl_exhibitor_show.exhibiting_as
+  - remove http(s):// from website urls
+  - Building column determines which map the booths belong to
+    - Central goes to _ map_id
+    - North goes to _ map_id
+    - Parking Lot goes to _ map_id
+  - If an exhibitor doesn't exist, we need to create them. The tbl_exhibitor_contact record needs to be created with a contact_type of 'directory'. 
+    - Look to see if there is an exhibitor in tbl_exhibitors with that name.
+      - If there is, just use that id for exhibitor_id on tbl_exhibitor_show
+      - If not, create it
+  - When updating existing records on tbl_exhibitor_contact, update the one with the type 'directory'
+  - Note: there may be multiple rows per import id. If that happens, it means there are multiple booths for that exhibitor
+  - tbl_exhibitor_show.lastupdate should always be set with a timestamp
+  
+
+select * 
+FROM 
+tbl_exhibitors
+JOIN tbl_exhibitor_show ON tbl_exhibitors.id = tbl_exhibitor_show.exhibitor_id
+JOIN tbl_exhibitor_contact ON tbl_exhibitor_contact.exhibitor_show_id = tbl_exhibitor_show.id AND tbl_exhibitor_contact.contact_type = 'directory'
+
+Plus, tbl_exhibitor_booth, join tbl_exhibitor_booth.exhibitor_show_id ON tbl_exhibitor_show.id
