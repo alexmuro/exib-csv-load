@@ -1,9 +1,11 @@
 Checklist for NAHB import:
 
-- First, remove exhibitor_booths for all exhibitors in the file (* not all exhibitors for the show)
+X First, remove exhibitor_booths for all exhibitors in the file (* not all exhibitors for the show)
   Loop through all the rows, get all the import ids, for each import id, match on tbl_exhibitor_show and remove all the exhibitor_booths that match
-- Then, loop through again to start the import
-  - Convert special characters from macro to html entities
+  x Convert special characters from macro to html entities 
+  
+- Then, loop through again to start import
+  
   - always update the exhibiting_as column
   - if the tbl_exhibitor_show.allowupdate column = 1 then don't update any other columns on tbl_exhibitor_show or tbl_exhibitor_contact, but we always update exhibitor_booths and tbl_exhibitor_show.exhibiting_as
   - remove http(s):// from website urls

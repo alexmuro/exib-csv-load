@@ -117,16 +117,23 @@ include 'db.php';
       ON tbl_exhibitor_booth.exhibitor_show_id = tbl_exhibitor_show.id
       WHERE tbl_exhibitor_show.show_id = $show_id AND IN $import_ids
     )";
-    echo $query_string;
+    //echo $query_string;
     //$run = mysql_query($query);
     //if($verbose) {echo "Deleted ".mysql_affected_rows ($run)." rows from tbl_exhibitor_booth.";}
 
     //-----------------------------------------
     // START IMPORT
     //-----------------------------------------
+    
+    //-----------------------------------------
+    // Loop through current exhibitors with import_id
+    // update  exhibitor_booths and tbl_exhibitor_show.exhibiting_as
+    // if add 
+    //-----------------------------------------
     foreach($loaded as $loaded_row)
     {
       print_r($loaded_row);
+      echo '<br>';
     }
 
     // initial prep for db
