@@ -1,7 +1,8 @@
 Checklist for NAHB import:
 
+
 X First, remove exhibitor_booths for all exhibitors in the file (* not all exhibitors for the show)
-  Loop through all the rows, get all the import ids, for each import id, match on tbl_exhibitor_show and remove all the exhibitor_booths that match
+  xLoop through all the rows, get all the import ids, for each import id, match on tbl_exhibitor_show and remove all the exhibitor_booths that match
   x Convert special characters from macro to html entities 
   
 - Then, loop through again to start import
@@ -13,6 +14,9 @@ X First, remove exhibitor_booths for all exhibitors in the file (* not all exhib
     - Central goes to _ map_id
     - North goes to _ map_id
     - Parking Lot goes to _ map_id
+
+
+    
   - If an exhibitor doesn't exist, we need to create them. The tbl_exhibitor_contact record needs to be created with a contact_type of 'directory'. 
     - Look to see if there is an exhibitor in tbl_exhibitors with that name.
       - If there is, just use that id for exhibitor_id on tbl_exhibitor_show
@@ -22,10 +26,15 @@ X First, remove exhibitor_booths for all exhibitors in the file (* not all exhib
   - tbl_exhibitor_show.lastupdate should always be set with a timestamp
   
 
-select * 
-FROM 
-tbl_exhibitors
-JOIN tbl_exhibitor_show ON tbl_exhibitors.id = tbl_exhibitor_show.exhibitor_id
-JOIN tbl_exhibitor_contact ON tbl_exhibitor_contact.exhibitor_show_id = tbl_exhibitor_show.id AND tbl_exhibitor_contact.contact_type = 'directory'
 
-Plus, tbl_exhibitor_booth, join tbl_exhibitor_booth.exhibitor_show_id ON tbl_exhibitor_show.id
+
+//
+select * 
+FROM tbl_exhibitors
+JOIN tbl_exhibitor_show 
+ON tbl_exhibitors.id = tbl_exhibitor_show.exhibitor_id
+JOIN tbl_exhibitor_contact 
+ON tbl_exhibitor_contact.exhibitor_show_id = tbl_exhibitor_show.id 
+AND tbl_exhibitor_contact.contacttype = 'directory'
+JOIN tbl_exhibitor_booth ON tbl_exhibitor_booth.exhibitor_show_id = tbl_exhibitor_show.id
+WHERE tbl_exhibitor_show.show_id = 296
